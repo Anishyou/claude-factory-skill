@@ -1,0 +1,54 @@
+{
+  "$comment": "Read by the hooks in .claude/hooks/ and by the /factory skill. `/factory init` sets `validation` and `testPaths` for your stack (the pnpm commands below are an example); nothing else in the factory is stack-specific.",
+
+  "baseBranch": "main",
+
+  "validation": [
+    { "name": "lint",      "cmd": "pnpm lint",      "phases": ["tests", "build"] },
+    { "name": "typecheck", "cmd": "pnpm typecheck", "phases": ["tests", "build"] },
+    { "name": "test",      "cmd": "pnpm test",          "phases": ["build"] },
+    { "name": "build",     "cmd": "pnpm build",     "phases": ["build"] }
+  ],
+  "validationTimeoutSeconds": 900,
+
+  "$comment_testPaths": "Optional. If set, the test-writer may only change files matching these patterns.",
+  "testPaths": ["*.test.*", "e2e/", "fixtures/"],
+
+  "$comment_protectedPaths": "Agents may not change these. A human unlocks a path for one job with /factory allow <job-id> <path>.",
+  "protectedPaths": [
+    ".env", ".env.*",
+    "package-lock.json", "yarn.lock", "pnpm-lock.yaml", "poetry.lock", "Cargo.lock", "go.sum",
+    ".github/", ".gitlab-ci.yml", ".circleci/",
+    "Dockerfile", "docker-compose*", "k8s/", "helm/", "terraform/",
+    "migrations/", "prisma/migrations/", "db/migrate/", "alembic/versions/",
+    "firebase.json", "firestore.rules", "storage.rules", "*.rules",
+    "*.pem", "*.key", "*.p12", "*.pfx",
+    "factory/factory.config.json", ".claude/settings.json", ".claude/hooks/"
+  ],
+
+  "$comment_forbiddenCommands": "Regexes. A Bash command matching any of these is denied for every agent and the orchestrator.",
+  "forbiddenCommands": [
+    "git\\s+push\\b.*(--force|-f\\b|--force-with-lease)",
+    "git\\s+push\\b.*\\b(main|master)\\b",
+    "git\\s+add\\s+(-A|--all|\\.)(\\s|$)",
+    "git\\s+reset\\s+--hard",
+    "git\\s+checkout\\s+(main|master)(\\s|$)",
+    "git\\s+switch\\s+(main|master)(\\s|$)",
+    "git\\s+merge(?!-tree)\\b",
+    "git\\s+branch\\s+-D\\b",
+    "git\\s+worktree\\s+remove\\b.*--force",
+    "\\brm\\s+-rf?\\s+(/|~|\\$HOME|\\.\\.)(\\s|$)",
+    "--no-verify",
+    "(npm|pnpm|yarn)\\s+publish",
+    "(terraform|pulumi)\\s+(apply|destroy)",
+    "kubectl\\s+(apply|delete)",
+    "(firebase|vercel|netlify|fly|heroku)\\s+deploy"
+  ],
+
+  "pr": {
+    "labels": ["factory"],
+    "draft": false
+  },
+
+  "portBase": 5100
+}

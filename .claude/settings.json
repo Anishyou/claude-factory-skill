@@ -1,0 +1,42 @@
+{
+  "$comment": "Factory hooks. A PreToolUse deny holds in every permission mode. Extend `permissions.allow` with your stack's commands so subagents don't stall on prompts. Hooks run under sh / Git Bash and pick python3 or python, whichever exists.",
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "",
+        "hooks": [
+          { "type": "command", "command": "p=$(command -v python3 || command -v python); \"$p\" \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/session-start.py", "timeout": 10 }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit|NotebookEdit|Bash",
+        "hooks": [
+          { "type": "command", "command": "p=$(command -v python3 || command -v python); \"$p\" \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/guard.py", "timeout": 15 }
+        ]
+      }
+    ],
+    "SubagentStop": [
+      {
+        "matcher": "builder|test-writer",
+        "hooks": [
+          { "type": "command", "command": "p=$(command -v python3 || command -v python); \"$p\" \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/gate.py", "timeout": 1800 }
+        ]
+      }
+    ]
+  },
+  "permissions": {
+    "allow": [
+      "Read", "Grep", "Glob",
+      "Bash(git status*)", "Bash(git log*)", "Bash(git diff*)", "Bash(git branch*)",
+      "Bash(git add *)", "Bash(git commit*)", "Bash(git worktree*)", "Bash(git merge-tree*)",
+      "Bash(git push -u origin factory/*)", "Bash(git rev-parse*)", "Bash(git show*)",
+      "Bash(gh pr *)", "Bash(mkdir *)", "Bash(ls *)", "Bash(cat *)", "Bash(echo *)",
+      "Bash(agent-browser *)"
+    ],
+    "deny": [
+      "Read(./.env)", "Read(./.env.*)", "Read(**/*.pem)", "Read(**/*.key)"
+    ]
+  }
+}

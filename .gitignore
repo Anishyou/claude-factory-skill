@@ -1,0 +1,13 @@
+# Factory runtime state (one folder per job)
+factory/jobs/*
+!factory/jobs/.gitkeep
+
+# Python (hooks)
+__pycache__/
+*.pyc
+
+# OS / editors
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
