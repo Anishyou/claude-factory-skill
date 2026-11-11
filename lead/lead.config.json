@@ -1,0 +1,9 @@
+{
+  "$comment": "Limits for the /lead skill. The human edits this file; the lead only reads it. maxJobRunsPerWake: new jobs plus reworks one wake may run (each is a full build loop). wipLimit: the lead starts no new job while this many queue items wait on you. autoStart false: the lead only carries out your decisions and never takes backlog items itself. ideasPerWake 0 turns idea items off. staleHours: an active job untouched this long, owned by another session, is flagged as stalled. lockHours: a WORKING status older than this is treated as a dead wake.",
+  "autoStart": true,
+  "maxJobRunsPerWake": 1,
+  "wipLimit": 3,
+  "ideasPerWake": 1,
+  "staleHours": 6,
+  "lockHours": 3
+}

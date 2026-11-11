@@ -1,3 +1,14 @@
+# Claude skills
+
+Skills for Claude Code that I built and use on my own projects.
+
+| Skill | What it does | Read more |
+| --- | --- | --- |
+| **Software Factory** | A product brief goes in. Reviewed, tested pull requests come out. | Below |
+| **Lead** | Runs the factory between your visits and puts everything it needs from you on one dashboard. | [lead/](lead/README.md) |
+
+---
+
 # Software Factory for Claude Code
 
 **A product brief goes in. Reviewed, tested pull requests come out.**
@@ -139,7 +150,7 @@ reviewers can look at the running app.
 
 ```bash
 # in your project root
-git clone https://github.com/Anishyou/claude-software-factory /tmp/sf
+git clone https://github.com/Anishyou/claude-skills /tmp/sf
 cp -r /tmp/sf/.claude /tmp/sf/factory .
 mkdir -p docs && cp /tmp/sf/docs/policies.md docs/   # standing decisions
 cat /tmp/sf/CLAUDE.factory-template.md >> CLAUDE.md
